@@ -62,3 +62,20 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Income {
+    id Int @id @default(autoincrement())
+    title String @unique
+    amount Int
+    payPeriod String? @default("Semi-Monthly")
+    nextPaycheck DateTime?
+}
+
+model Expense {
+    id Int @id @default(autoincrement())
+    title String @unique
+    amount Int
+    frequency String
+    dayOfMonth Int?
+    dayOfWeek Int?
+}
