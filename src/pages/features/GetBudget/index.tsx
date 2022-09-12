@@ -127,14 +127,18 @@ export function GetBudgetModal({ isOpen, setIsOpen, incomes }: DialogProps) {
                                                 date: Date;
                                                 net: Number;
                                             }) => (
-                                                <div>
-                                                    <span>
-                                                        {format(
-                                                            date.date,
-                                                            'MM/dd'
-                                                        )}
-                                                        - Net: {date.net}
-                                                    </span>
+                                                <div
+                                                    key={format(
+                                                        date.date,
+                                                        'MM/dd/yyyy'
+                                                    )}
+                                                >
+                                                    {format(
+                                                        date.date,
+                                                        'MM/dd'
+                                                    ) +
+                                                        ' - ' +
+                                                        date.net}
                                                 </div>
                                             )
                                         )}
