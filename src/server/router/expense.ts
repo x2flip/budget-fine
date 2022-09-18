@@ -1,5 +1,6 @@
 import { createRouter } from './context';
 import { z } from 'zod';
+import { resolve } from 'path';
 
 export const expenseRouter = createRouter()
     .mutation('create', {
@@ -40,5 +41,15 @@ export const expenseRouter = createRouter()
                 where: { id },
                 data: { ...rest },
             });
+        },
+    })
+    .mutation('delete', {
+        input: z.object({ id: z.number() }),
+        async resolve({ ctx, input }) {
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            const { id } = input;
+            if (!id) return;
+            return await ctx.prisma.expense.delete({ where: { id } });
         },
     });

@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { trpc } from '../../../utils/trpc';
+import { DeleteExpense } from './DeleteExpense';
 
 interface EditExpenseDialogProps {
     isOpen: boolean;
@@ -99,6 +100,12 @@ export const EditExpenseDialog = ({
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="w-full space-y-6 max-w-md transform rounded-2xl bg-white dark:bg-slate-800 dark-text-slate-100 p-6 text-left align-middle shadow-xl transition-all">
+                                <div className="flex justify-end">
+                                    <DeleteExpense
+                                        id={id}
+                                        closeModal={closeModal}
+                                    />
+                                </div>
                                 <Dialog.Title
                                     as="h3"
                                     className="text-2xl font-medium leading-6 dark:text-slate-100 text-gray-900"

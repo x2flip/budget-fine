@@ -38,4 +38,14 @@ export const incomeRouter = createRouter()
                 data: { ...rest },
             });
         },
+    })
+    .mutation('delete', {
+        input: z.object({ id: z.number() }),
+        async resolve({ ctx, input }) {
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            const { id } = input;
+            if (!id) return;
+            return await ctx.prisma.income.delete({ where: { id } });
+        },
     });

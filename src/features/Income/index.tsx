@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Income } from '@prisma/client';
 import { payPeriods } from './PayPeriods/PayPeriods';
 import { trpc } from '../../utils/trpc';
+import { DeleteIncome } from './DeleteIncome';
 
 interface AddIncomeDialogProps {
     isOpen: boolean;

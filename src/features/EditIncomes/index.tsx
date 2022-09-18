@@ -6,6 +6,7 @@ import { payPeriods } from '../Income/PayPeriods/PayPeriods';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { trpc } from '../../utils/trpc';
+import { DeleteIncome } from '../Income/DeleteIncome';
 
 interface EditIncomeDialogProps {
     isOpen: boolean;
@@ -88,6 +89,12 @@ export const EditIncomeDialog = ({
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="w-full space-y-6 max-w-md transform rounded-2xl bg-white dark:bg-slate-800 dark-text-slate-100 p-6 text-left align-middle shadow-xl transition-all">
+                                <div className="flex justify-end">
+                                    <DeleteIncome
+                                        id={id}
+                                        closeModal={closeModal}
+                                    />
+                                </div>
                                 <Dialog.Title
                                     as="h3"
                                     className="text-2xl font-medium leading-6 text-gray-900 dark:text-slate-100"
@@ -172,12 +179,14 @@ export const EditIncomeDialog = ({
                                         />
                                     </div>
 
-                                    <div className="mt-4">
+                                    <div className="mt-4 flex justify-between">
                                         <button
                                             type="submit"
                                             className="inline-flex justify-center rounded-md border-2 border-blue-200 px-4 py-2 text-sm font-medium text-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                         >
-                                            Save Income
+                                            {mutation.isLoading
+                                                ? 'Saving...'
+                                                : 'Save'}
                                         </button>
                                         <button
                                             // type="submit"
