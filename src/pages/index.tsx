@@ -46,7 +46,7 @@ const Home: NextPage = () => {
                         )} */}
                         <button
                             onClick={() => setIsGetBudgetModalOpen(true)}
-                            className="border-2 border-cyan-400 py-4 text-cyan-400 shadow-xl shadow-cyan-400/20"
+                            className="border-2 border-cyan-400 py-4 text-cyan-400 shadow-xl shadow-cyan-400/20 rounded-md"
                         >
                             Get Budget!
                         </button>
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
                             isOpen={isGetBudgetModalOpen}
                             setIsOpen={setIsGetBudgetModalOpen}
                         />
-                        <div className="flex sm:flex-col sm:space-y-6 md:space-x-10">
+                        <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-10">
                             <div className="flex flex-col space-y-6 w-full">
                                 <h2 className="text-3xl text-center font-bold">
                                     Incomes
