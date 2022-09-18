@@ -2,13 +2,29 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
-import { signIn, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { UserAvatar } from '../components/UserAvatar';
 import { GetBudgetModal } from '../features/GetBudget';
 import { AddIncomeDialog } from '../features/Income';
 import { IncomeCard } from '../features/Income/components/IncomeCard';
 import { AddExpenseDialog } from '../features/Expense';
 import { ExpenseCard } from '../features/Expense/ExpenseCard/ExpenseCard';
+import { redirect } from 'next/dist/server/api-utils';
+
+export async function getServerSideProps(context: any) {
+    const session = await getSession();
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/auth/signin',
+                permanent: false,
+            },
+        };
+    }
+    return {
+        props: { session },
+    };
+}
 
 const Home: NextPage = () => {
     let { data: session } = useSession();
