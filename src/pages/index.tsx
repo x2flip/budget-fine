@@ -2,15 +2,16 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
-import { AddIncomeDialog } from './features/Income';
-import { AddExpenseDialog } from './features/Expense';
-import { GetBudgetModal } from './features/GetBudget';
-import { BeakerIcon, PencilIcon } from '@heroicons/react/24/solid';
-import { EditIncomeDialog } from './features/EditIncomes';
-import { IncomeCard } from './features/Income/components/IncomeCard';
-import { ExpenseCard } from './features/Expense/ExpenseCard/ExpenseCard';
+import { signIn, useSession } from 'next-auth/react';
+import { UserAvatar } from '../components/UserAvatar';
+import { GetBudgetModal } from '../features/GetBudget';
+import { AddIncomeDialog } from '../features/Income';
+import { IncomeCard } from '../features/Income/components/IncomeCard';
+import { AddExpenseDialog } from '../features/Expense';
+import { ExpenseCard } from '../features/Expense/ExpenseCard/ExpenseCard';
 
 const Home: NextPage = () => {
+    let { data: session } = useSession();
     const [isAddIncomeModalOpen, setIsAddIncomeModalOpen] = useState(false);
     const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
     const [isGetBudgetModalOpen, setIsGetBudgetModalOpen] = useState(false);
@@ -25,66 +26,87 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="flex items-center justify-center min-h-screen">
-                <div className="flex flex-col space-y-10">
+            <nav className="dark:bg-slate-900 flex justify-end absolute w-full py-2">
+                {session?.user?.image && (
+                    <UserAvatar image={session.user.image} />
+                )}
+            </nav>
+            <main className="flex items-center justify-center min-h-screen dark:bg-slate-900 dark:text-slate-100">
+                {!session ? (
                     <button
-                        onClick={() => setIsGetBudgetModalOpen(true)}
-                        className="bg-blue-400 py-4 text-white hover:bg-blue-500"
+                        className="px-4 py-2 rounded-md shadow-md border-2 border-purple-400 text-purple-200 font-semibold hover:scale-110 transition-all duration-300"
+                        onClick={() => signIn()}
                     >
-                        Get Budget!
+                        Login With Discord
                     </button>
-                    <GetBudgetModal
-                        incomes={incomes?.data}
-                        isOpen={isGetBudgetModalOpen}
-                        setIsOpen={setIsGetBudgetModalOpen}
-                    />
-                    <div className="flex space-x-10">
-                        <div className="flex flex-col space-y-6">
-                            <h2 className="text-3xl text-center font-bold">
-                                Incomes
-                            </h2>
-                            <button
-                                onClick={() => setIsAddIncomeModalOpen(true)}
-                                className="py-2 px-4 bg-green-500 hover:bg-green-600 text-white"
-                            >
-                                Add income
-                            </button>
-                            <AddIncomeDialog
-                                isOpen={isAddIncomeModalOpen}
-                                setIsOpen={setIsAddIncomeModalOpen}
-                            />
-                            {incomes?.data &&
-                                incomes.data.map((income) => (
-                                    <IncomeCard
-                                        key={income.id}
-                                        income={income}
-                                    />
-                                ))}
-                        </div>
-                        <div className="flex flex-col space-y-6">
-                            <h2 className="text-3xl text-center font-bold">
-                                Expenses
-                            </h2>
-                            <button
-                                onClick={() => setIsAddExpenseModalOpen(true)}
-                                className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white"
-                            >
-                                Add expense
-                            </button>
-                            <AddExpenseDialog
-                                isOpen={isAddExpenseModalOpen}
-                                setIsOpen={setIsAddExpenseModalOpen}
-                            />
-                            {expenses?.data &&
-                                expenses.data.map((expense) => (
-                                    <ExpenseCard
-                                        key={expense.id}
-                                        expense={expense}
-                                    />
-                                ))}
+                ) : (
+                    <div className="flex flex-col space-y-10">
+                        {/* {session?.user?.image && (
+                            <UserAvatar image={session.user.image} />
+                        )} */}
+                        <button
+                            onClick={() => setIsGetBudgetModalOpen(true)}
+                            className="border-2 border-cyan-400 py-4 text-cyan-400 shadow-xl shadow-cyan-400/20"
+                        >
+                            Get Budget!
+                        </button>
+                        <GetBudgetModal
+                            incomes={incomes?.data}
+                            isOpen={isGetBudgetModalOpen}
+                            setIsOpen={setIsGetBudgetModalOpen}
+                        />
+                        <div className="flex sm:flex-col sm:space-y-6 md:space-x-10">
+                            <div className="flex flex-col space-y-6 w-full">
+                                <h2 className="text-3xl text-center font-bold">
+                                    Incomes
+                                </h2>
+                                <button
+                                    onClick={() =>
+                                        setIsAddIncomeModalOpen(true)
+                                    }
+                                    className="py-2 px-4 border-2 border-green-500 text-green-500 shadow-xl shadow-green-500/20 rounded-md"
+                                >
+                                    Add income
+                                </button>
+                                <AddIncomeDialog
+                                    isOpen={isAddIncomeModalOpen}
+                                    setIsOpen={setIsAddIncomeModalOpen}
+                                />
+                                {incomes?.data &&
+                                    incomes.data.map((income) => (
+                                        <IncomeCard
+                                            key={income.id}
+                                            income={income}
+                                        />
+                                    ))}
+                            </div>
+                            <div className="flex flex-col space-y-6 w-full">
+                                <h2 className="text-3xl text-center font-bold">
+                                    Expenses
+                                </h2>
+                                <button
+                                    onClick={() =>
+                                        setIsAddExpenseModalOpen(true)
+                                    }
+                                    className="py-2 px-4 border-2 border-red-500 text-red-500 rounded-md shadow-xl shadow-red-400/20"
+                                >
+                                    Add expense
+                                </button>
+                                <AddExpenseDialog
+                                    isOpen={isAddExpenseModalOpen}
+                                    setIsOpen={setIsAddExpenseModalOpen}
+                                />
+                                {expenses?.data &&
+                                    expenses.data.map((expense) => (
+                                        <ExpenseCard
+                                            key={expense.id}
+                                            expense={expense}
+                                        />
+                                    ))}
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </main>
         </>
     );

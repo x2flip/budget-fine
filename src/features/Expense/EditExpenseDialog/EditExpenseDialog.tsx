@@ -4,7 +4,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { trpc } from '../../../../utils/trpc';
+import { trpc } from '../../../utils/trpc';
 
 interface EditExpenseDialogProps {
     isOpen: boolean;
@@ -63,17 +63,6 @@ export const EditExpenseDialog = ({
                 amount: Number(amount),
             });
         }
-        // let changedIncome = {
-        //     id,
-        //     // nextPaycheck: nextCheckDate,
-        //     frequency: freq,
-        //     dayOfMonth: Number(data.dayOfMonth),
-        //     dayOfWeek: Number(data.dayOfWeek),
-        //     ...data,
-        // };
-
-        // console.log(changedIncome);
-        // mutation.mutate(changedIncome);
     };
 
     function closeModal() {
@@ -109,63 +98,60 @@ export const EditExpenseDialog = ({
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full space-y-6 max-w-md transform rounded-2xl bg-white dark:bg-slate-800 dark-text-slate-100 p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-2xl font-medium leading-6 dark:text-slate-100 text-gray-900"
                                 >
                                     Edit Expense
                                 </Dialog.Title>
                                 <form
                                     onSubmit={handleSubmit(onSubmit)}
-                                    className="mt-2 flex flex-col space-y-4"
+                                    className="mt-2 flex flex-col space-y-4 dark:text-slate-100"
                                 >
-                                    <div>
-                                        <label>
-                                            Title
-                                            <input
-                                                defaultValue={title}
-                                                className="border ml-4"
-                                                {...register('title', {
-                                                    required: true,
-                                                })}
-                                            />
-                                        </label>
+                                    <div className="flex flex-col">
+                                        <label className="">Title</label>
+                                        <input
+                                            defaultValue={title}
+                                            className="bg-slate-700 rounded-md px-4 py-2 shadow-md"
+                                            {...register('title', {
+                                                required: true,
+                                            })}
+                                        />
                                     </div>
-                                    <div>
-                                        <label>
-                                            Amount
-                                            <input
-                                                type="number"
-                                                step="0.01"
-                                                min="0"
-                                                className="border ml-4"
-                                                {...register('amount', {
-                                                    min: 0,
-                                                    required: true,
-                                                    value: amount,
-                                                })}
-                                            />
-                                        </label>
+                                    <div className="flex flex-col">
+                                        <label>Amount</label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            className="bg-slate-700 rounded-md px-4 py-2 shadow-md"
+                                            {...register('amount', {
+                                                min: 0,
+                                                required: true,
+                                                value: amount,
+                                            })}
+                                        />
                                     </div>
 
                                     <div>
+                                        <label>Frequency</label>
                                         <Listbox
                                             value={freq}
                                             onChange={setFreq}
                                         >
-                                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white dark:bg-slate-700 py-2 px-4 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                                                 {freq}
                                             </Listbox.Button>
-                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <Listbox.Option
                                                     key={'Weekly'}
                                                     value={'Weekly'}
                                                     className={({ active }) =>
                                                         `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                                             active
-                                                                ? 'bg-amber-100 text-amber-900'
-                                                                : 'text-gray-900'
+                                                                ? 'bg-amber-900 text-amber-100'
+                                                                : 'text-gray-900 dark:text-slate-100'
                                                         }`
                                                     }
                                                 >
@@ -177,8 +163,8 @@ export const EditExpenseDialog = ({
                                                     className={({ active }) =>
                                                         `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                                             active
-                                                                ? 'bg-amber-100 text-amber-900'
-                                                                : 'text-gray-900'
+                                                                ? 'bg-amber-900 text-amber-100'
+                                                                : 'text-gray-900 dark:text-slate-100'
                                                         }`
                                                     }
                                                 >
@@ -188,53 +174,49 @@ export const EditExpenseDialog = ({
                                         </Listbox>
                                     </div>
                                     {freq === 'Monthly' && (
-                                        <div>
-                                            <label>
-                                                Day of Month
-                                                <input
-                                                    type="number"
-                                                    min="1"
-                                                    max="28"
-                                                    className="border ml-4"
-                                                    {...register('dayOfMonth', {
-                                                        min: 0,
-                                                        required: false,
-                                                        value: dayOfMonth || 0,
-                                                    })}
-                                                />
-                                            </label>
+                                        <div className="flex flex-col">
+                                            <label>Day of Month</label>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                max="28"
+                                                className="bg-slate-700 rounded-md px-4 py-2 shadow-md"
+                                                {...register('dayOfMonth', {
+                                                    min: 0,
+                                                    required: false,
+                                                    value: dayOfMonth || 0,
+                                                })}
+                                            />
                                         </div>
                                     )}
                                     {freq === 'Weekly' && (
-                                        <div>
-                                            <label>
-                                                Day of Week
-                                                <input
-                                                    type="number"
-                                                    min="1"
-                                                    max="7"
-                                                    className="border ml-4"
-                                                    {...register('dayOfWeek', {
-                                                        min: 1,
-                                                        max: 7,
-                                                        required: false,
-                                                        value: dayOfWeek || 0,
-                                                    })}
-                                                />
-                                            </label>
+                                        <div className="flex flex-col">
+                                            <label>Day of Week</label>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                max="7"
+                                                className="bg-slate-700 rounded-md px-4 py-2 shadow-md"
+                                                {...register('dayOfWeek', {
+                                                    min: 1,
+                                                    max: 7,
+                                                    required: false,
+                                                    value: dayOfWeek || 0,
+                                                })}
+                                            />
                                         </div>
                                     )}
 
-                                    <div className="mt-4">
+                                    <div className="mt-10 flex justify-between">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            className="inline-flex justify-center rounded-md border-2 border-blue-400 px-4 py-2 text-blue-400 shadow-xl shadow-blue-400/10 hover:scale-105 duration-300"
                                         >
                                             Edit Expense
                                         </button>
                                         <button
                                             // type="submit"
-                                            className="inline-flex ml-4 justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                                            className="inline-flex justify-center rounded-md border-2 border-red-400 px-4 py-2 text-red-400 shadow-xl shadow-red-400/10 hover:scale-105 duration-300"
                                             onClick={closeModal}
                                         >
                                             Cancel

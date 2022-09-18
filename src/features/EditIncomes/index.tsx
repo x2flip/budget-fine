@@ -2,10 +2,10 @@ import { Dialog, Listbox, Transition } from '@headlessui/react';
 import { Income } from '@prisma/client';
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { trpc } from '../../../utils/trpc';
 import { payPeriods } from '../Income/PayPeriods/PayPeriods';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { trpc } from '../../utils/trpc';
 
 interface EditIncomeDialogProps {
     isOpen: boolean;
@@ -87,54 +87,57 @@ export const EditIncomeDialog = ({
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full space-y-6 max-w-md transform rounded-2xl bg-white dark:bg-slate-800 dark-text-slate-100 p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-2xl font-medium leading-6 text-gray-900 dark:text-slate-100"
                                 >
-                                    Add Income
+                                    Edit Income
                                 </Dialog.Title>
                                 <form
                                     onSubmit={handleSubmit(onSubmit)}
                                     className="mt-2 flex flex-col space-y-4"
                                 >
-                                    <div>
-                                        <label>
+                                    <div className="flex flex-col">
+                                        <label className="dark:text-slate-100">
                                             Title
-                                            <input
-                                                defaultValue={title}
-                                                className="border ml-4"
-                                                {...register('title', {
-                                                    required: true,
-                                                })}
-                                            />
                                         </label>
+                                        <input
+                                            defaultValue={title}
+                                            className="dark:bg-slate-700 py-2 px-4 dark:text-slate-100 rounded-md"
+                                            {...register('title', {
+                                                required: true,
+                                            })}
+                                        />
                                     </div>
-                                    <div>
-                                        <label>
+                                    <div className="flex flex-col">
+                                        <label className="dark:text-slate-100">
                                             Amount
-                                            <input
-                                                type="number"
-                                                step="0.01"
-                                                min="0"
-                                                className="border ml-4"
-                                                {...register('amount', {
-                                                    min: 0,
-                                                    required: true,
-                                                    value: amount,
-                                                })}
-                                            />
                                         </label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            className="dark:bg-slate-700 py-2 px-4 rounded-md dark:text-slate-100"
+                                            {...register('amount', {
+                                                min: 0,
+                                                required: true,
+                                                value: amount,
+                                            })}
+                                        />
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col">
+                                        <label className="dark:text-slate-100">
+                                            Cadence
+                                        </label>
                                         <Listbox
                                             value={selectedPayPeriod}
                                             onChange={setSelectedPayPeriod}
                                         >
-                                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                            <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white dark:bg-slate-700 dark:text-slate-100 z-20 px-4 py-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                                                 {selectedPayPeriod?.type}
                                             </Listbox.Button>
-                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white z-10 dark:bg-slate-700 dark:text-slate-100 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
                                                 {payPeriods.map((period) => (
                                                     <Listbox.Option
                                                         key={period.type}
@@ -142,10 +145,10 @@ export const EditIncomeDialog = ({
                                                         className={({
                                                             active,
                                                         }) =>
-                                                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                            `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
                                                                 active
-                                                                    ? 'bg-amber-100 text-amber-900'
-                                                                    : 'text-gray-900'
+                                                                    ? 'bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-slate-100'
+                                                                    : 'text-gray-900 dark:text-slate-100'
                                                             }`
                                                         }
                                                     >
@@ -156,9 +159,12 @@ export const EditIncomeDialog = ({
                                             </Listbox.Options>
                                         </Listbox>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col">
+                                        <label className="dark:text-slate-100">
+                                            Next Check
+                                        </label>
                                         <DatePicker
-                                            className="border"
+                                            className="dark:bg-slate-700 py-2 w-full px-4 dark:text-slate-100 rounded-md"
                                             selected={nextCheckDate}
                                             onChange={(date: Date) =>
                                                 setNextCheckDate(date)
@@ -169,13 +175,13 @@ export const EditIncomeDialog = ({
                                     <div className="mt-4">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            className="inline-flex justify-center rounded-md border-2 border-blue-200 px-4 py-2 text-sm font-medium text-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                         >
-                                            Edit Income
+                                            Save Income
                                         </button>
                                         <button
                                             // type="submit"
-                                            className="inline-flex ml-4 justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                                            className="inline-flex ml-4 justify-center rounded-md border-2 border-red-300 px-4 py-2 text-sm font-medium text-red-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                                             onClick={closeModal}
                                         >
                                             Cancel

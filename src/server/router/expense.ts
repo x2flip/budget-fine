@@ -11,12 +11,18 @@ export const expenseRouter = createRouter()
             dayOfWeek: z.number().optional(),
         }),
         async resolve({ ctx, input }) {
-            return await ctx.prisma.expense.create({ data: input });
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            return await ctx.prisma.expense.create({
+                data: { ...input, userId },
+            });
         },
     })
     .query('getAll', {
         async resolve({ ctx }) {
-            return await ctx.prisma.expense.findMany();
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            return await ctx.prisma.expense.findMany({ where: { userId } });
         },
     })
     .mutation('edit', {

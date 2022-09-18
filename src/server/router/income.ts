@@ -9,12 +9,18 @@ export const incomeRouter = createRouter()
             payPeriod: z.string(),
         }),
         async resolve({ ctx, input }) {
-            return await ctx.prisma.income.create({ data: input });
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            return await ctx.prisma.income.create({
+                data: { ...input, userId },
+            });
         },
     })
     .query('getAll', {
         async resolve({ ctx }) {
-            return await ctx.prisma.income.findMany();
+            const userId = ctx.session?.user?.id;
+            if (!userId) return;
+            return await ctx.prisma.income.findMany({ where: { userId } });
         },
     })
     .mutation('edit', {

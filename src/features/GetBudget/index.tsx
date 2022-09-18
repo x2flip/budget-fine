@@ -1,12 +1,12 @@
 import { Dialog, Listbox, Transition } from '@headlessui/react';
 import { Dispatch, SetStateAction, Fragment, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { trpc } from '../../../utils/trpc';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Income } from '@prisma/client';
 import { NextCheck } from './NextCheck';
 import { format } from 'date-fns';
+import { trpc } from '../../utils/trpc';
 
 interface DialogProps {
     isOpen: boolean;

@@ -12,11 +12,13 @@ export const IncomeCard = ({ income }: IncomeCardProps) => {
     const handleEditIncome = () => setIsEditIncomeModalOpen(true);
     const { title, amount, payPeriod, nextPaycheck } = income;
     return (
-        <div className="bg-slate-100 flex py-2 px-4">
-            <span className="text-gray-800 flex-grow font-semibold mr-4">
+        <div className="bg-slate-100 dark:bg-slate-800 flex py-4 px-10 rounded-md">
+            <span className="text-gray-800 dark:text-slate-200 flex-grow font-semibold mr-4">
                 {title}
             </span>
-            <span className="text-green-700 font-bold">{amount}</span>
+            <span className="text-green-700 dark:text-green-300 font-bold">
+                {amount}
+            </span>
             <EditIncomeDialog
                 income={income}
                 isOpen={isEditIncomeModalOpen}

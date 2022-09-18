@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useState, Fragment } from 'react';
 import { Dialog, Transition, Listbox } from '@headlessui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { trpc } from '../../../utils/trpc';
 import { Income } from '@prisma/client';
 import { payPeriods } from './PayPeriods/PayPeriods';
+import { trpc } from '../../utils/trpc';
 
 interface AddIncomeDialogProps {
     isOpen: boolean;
@@ -73,52 +73,48 @@ export function AddIncomeDialog({ isOpen, setIsOpen }: AddIncomeDialogProps) {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden space-y-6 rounded-2xl bg-white dark:bg-slate-800 p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-2xl font-medium leading-6 text-gray-900 dark:text-slate-100"
                                 >
                                     Add Income
                                 </Dialog.Title>
                                 <form
                                     onSubmit={handleSubmit(onSubmit)}
-                                    className="mt-2 flex flex-col space-y-4"
+                                    className="flex flex-col text-slate-100 space-y-4"
                                 >
-                                    <div>
-                                        <label>
-                                            Title
-                                            <input
-                                                className="border ml-4"
-                                                {...register('title', {
-                                                    required: true,
-                                                })}
-                                            />
-                                        </label>
+                                    <div className="flex flex-col">
+                                        <label className="">Title</label>
+                                        <input
+                                            className="py-2 px-4 bg-slate-700 shadow-md rounded-md"
+                                            {...register('title', {
+                                                required: true,
+                                            })}
+                                        />
                                     </div>
-                                    <div>
-                                        <label>
-                                            Amount
-                                            <input
-                                                type="number"
-                                                step="0.01"
-                                                min="0"
-                                                className="border ml-4"
-                                                {...register('amount', {
-                                                    min: 0,
-                                                    required: true,
-                                                })}
-                                            />
-                                        </label>
+                                    <div className="flex flex-col">
+                                        <label>Amount</label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            className="py-2 px-4 bg-slate-700 shadow-md rounded-md"
+                                            {...register('amount', {
+                                                min: 0,
+                                                required: true,
+                                            })}
+                                        />
                                     </div>
                                     <div>
                                         <Listbox
                                             value={selectedPayPeriod}
                                             onChange={setSelectedPayPeriod}
                                         >
-                                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                            <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white dark:bg-slate-700 py-2 px-4 text-left shadow-md">
                                                 {selectedPayPeriod?.type}
                                             </Listbox.Button>
-                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 {payPeriods.map((period) => (
                                                     <Listbox.Option
                                                         key={period.type}
@@ -128,8 +124,8 @@ export function AddIncomeDialog({ isOpen, setIsOpen }: AddIncomeDialogProps) {
                                                         }) =>
                                                             `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                                                 active
-                                                                    ? 'bg-amber-100 text-amber-900'
-                                                                    : 'text-gray-900'
+                                                                    ? 'bg-amber-900 text-amber-100'
+                                                                    : 'text-gray-900 dark:bg-slate-100'
                                                             }`
                                                         }
                                                     >
