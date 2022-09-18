@@ -25,6 +25,11 @@ export const authOptions: NextAuthOptions = {
         }),
         // ...add more providers here
     ],
+    theme: {
+        colorScheme: 'auto',
+        brandColor: '33ceff',
+        buttonText: '33ceff',
+    },
 };
 
 export default NextAuth(authOptions);

@@ -63,7 +63,7 @@ const Home: NextPage = () => {
                         Login With Discord
                     </button>
                 ) : ( */}
-                <div className="flex flex-col space-y-10">
+                <div className="flex flex-col space-y-10 mt-20">
                     {/* {session?.user?.image && (
                             <UserAvatar image={session.user.image} />
                         )} */}
