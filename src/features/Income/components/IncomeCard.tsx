@@ -35,7 +35,7 @@ export const IncomeCard = ({ income }: IncomeCardProps) => {
             </div>
             <button
                 onClick={handleEditIncome}
-                className="self-center bg-slate-700 h-full px-2 rounded-r-md hover:bg-slate-600 duration-300"
+                className="bg-slate-700 px-2 rounded-r-md hover:bg-slate-600 duration-300"
             >
                 <PencilIcon className="text-slate-300 h-4" />
             </button>

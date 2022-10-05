@@ -65,7 +65,7 @@ export function GetBudgetModal({ isOpen, setIsOpen, incomes }: DialogProps) {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white flex flex-col space-y-2 overflow-y-scroll h-96 p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white flex flex-col space-y-2 h-96 p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"

@@ -64,6 +64,14 @@ export const EditExpenseDialog = ({
                 amount: Number(amount),
             });
         }
+        if (freq === 'Daily') {
+            mutation.mutate({
+                id,
+                title,
+                frequency: freq,
+                amount: Number(amount),
+            });
+        }
     };
 
     function closeModal() {
@@ -176,6 +184,19 @@ export const EditExpenseDialog = ({
                                                     }
                                                 >
                                                     {'Monthly'}
+                                                </Listbox.Option>
+                                                <Listbox.Option
+                                                    key={'Daily'}
+                                                    value={'Daily'}
+                                                    className={({ active }) =>
+                                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                            active
+                                                                ? 'bg-amber-900 text-amber-100'
+                                                                : 'text-gray-900 dark:text-slate-100'
+                                                        }`
+                                                    }
+                                                >
+                                                    {'Daily'}
                                                 </Listbox.Option>
                                             </Listbox.Options>
                                         </Listbox>

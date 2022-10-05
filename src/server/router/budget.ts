@@ -1,6 +1,14 @@
 import { createRouter } from './context';
 import { z } from 'zod';
-import { add, addDays, format, isBefore, isSameDay } from 'date-fns';
+import {
+    add,
+    addDays,
+    format,
+    getDate,
+    getDay,
+    isBefore,
+    isSameDay,
+} from 'date-fns';
 
 export const budgetRouter = createRouter().query('getBudget', {
     input: z.object({ baseAmount: z.number(), cutoff: z.date() }),
@@ -52,12 +60,30 @@ export const budgetRouter = createRouter().query('getBudget', {
             for (let j = 0; j < expenses.length; j++) {
                 const expense = expenses[j];
                 if (!expense) break;
-                const dayOfMonthForExpense = expense.dayOfMonth;
-                const dayOfMonthForCurrentDate = new Date(d).getDate();
-                const amount = expense.amount;
-                if (!dayOfMonthForExpense) break;
-                if (dayOfMonthForCurrentDate === dayOfMonthForExpense) {
+                const { frequency, amount, dayOfMonth, dayOfWeek } = expense;
+                if (frequency === 'Daily') {
+                    //reduce the net by the expense amount
                     net -= amount;
+                }
+                if (frequency === 'Weekly') {
+                    //Check to make sure there is a dayOfWeek present
+                    if (!dayOfWeek) break;
+                    // Get the current day of the Week and add 1 for the difference between datefns and this app
+                    const currentDayOfWeek = getDay(new Date(d)) + 1;
+                    // If the current day of the week is the same as the dayOfWeek, reduce the net by the amount
+                    if (dayOfWeek === currentDayOfWeek) net -= amount;
+                }
+                if (frequency === 'Monthly') {
+                    // If there is no dayOfMonth in the expense, then break
+                    if (!dayOfMonth) break;
+                    // Get the current day of the month
+                    const dayOfMonthForCurrentDate = getDate(new Date(d));
+                    // const dayOfMonthForCurrentDate = new Date(d).getDate();
+                    //If the current day is the same as the day of month for the expense
+                    if (dayOfMonthForCurrentDate === dayOfMonth) {
+                        // Reduce the net by the expense amount
+                        net -= amount;
+                    }
                 }
             }
 
