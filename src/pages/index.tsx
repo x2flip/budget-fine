@@ -34,7 +34,8 @@ const Home: NextPage = () => {
     const [isGetBudgetModalOpen, setIsGetBudgetModalOpen] = useState(false);
     const incomes = trpc.useQuery(['income.getAll']);
     const expenses = trpc.useQuery(['expense.getAll']);
-
+    const users = trpc.useQuery(['user.getAll']);
+    console.log(users);
     useEffect(() => {
         if (status === 'unauthenticated') {
             signIn();

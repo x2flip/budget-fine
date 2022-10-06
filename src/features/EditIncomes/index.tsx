@@ -1,5 +1,4 @@
 import { Dialog, Listbox, Transition } from '@headlessui/react';
-import { Income } from '@prisma/client';
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { payPeriods } from '../Income/PayPeriods/PayPeriods';
@@ -7,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { trpc } from '../../utils/trpc';
 import { DeleteIncome } from '../Income/DeleteIncome';
+import { Income } from '@prisma/client';
 
 interface EditIncomeDialogProps {
     isOpen: boolean;
