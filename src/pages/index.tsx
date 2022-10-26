@@ -14,6 +14,7 @@ import { stat } from 'fs';
 import { IncomeGrandTotals } from '../features/Income/components/IncomesGrandTotals';
 import { GetBudgetButton } from '../features/GetBudget/components/GetBudgetButton';
 import { ExpensesGrandTotals } from '../features/Expense/components/ExpensesGrandTotals';
+import { BudgetGrandTotals } from '../features/GetBudget/components/BudgetGrandTotals';
 
 // export async function getServerSideProps(context: any) {
 //     const session = await getSession();
@@ -29,12 +30,33 @@ import { ExpensesGrandTotals } from '../features/Expense/components/ExpensesGran
 //         props: { session },
 //     };
 // }
-
+export interface BudgetHeaderData {
+    minIncome: number;
+    maxIncome: number;
+    avgIncome: number;
+    minExpense: number;
+    maxExpense: number;
+    avgExpense: number;
+    minTotal: number;
+    maxTotal: number;
+    avgTotal: number;
+}
 const Home: NextPage = () => {
     let { data: session, status } = useSession();
     const [isAddIncomeModalOpen, setIsAddIncomeModalOpen] = useState(false);
     const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
     const [isGetBudgetModalOpen, setIsGetBudgetModalOpen] = useState(false);
+    const [budgetHeaderData, setBudgetHeaderData] = useState<BudgetHeaderData>({
+        minIncome: 0,
+        maxIncome: 0,
+        avgIncome: 0,
+        minExpense: 0,
+        maxExpense: 0,
+        avgExpense: 0,
+        minTotal: 0,
+        maxTotal: 0,
+        avgTotal: 0,
+    });
     const incomes = trpc.useQuery(['income.getAll']);
     const expenses = trpc.useQuery(['expense.getAll']);
     const users = trpc.useQuery(['user.getAll']);
@@ -62,10 +84,32 @@ const Home: NextPage = () => {
                 <div className="flex flex-col my-20 space-y-10">
                     <div className="flex justify-evenly">
                         {incomes.data && (
-                            <IncomeGrandTotals incomes={incomes.data} />
+                            <IncomeGrandTotals
+                                setBudgetHeaderData={setBudgetHeaderData}
+                                incomes={incomes.data}
+                            />
                         )}
                         {expenses.data && (
-                            <ExpensesGrandTotals expenses={expenses.data} />
+                            <ExpensesGrandTotals
+                                setBudgetHeaderData={setBudgetHeaderData}
+                                expenses={expenses.data}
+                            />
+                        )}
+                        {budgetHeaderData.minExpense !== 0 && (
+                            <BudgetGrandTotals
+                                min={
+                                    budgetHeaderData.minIncome -
+                                    budgetHeaderData.maxExpense
+                                }
+                                max={
+                                    budgetHeaderData.maxIncome -
+                                    budgetHeaderData.minExpense
+                                }
+                                avg={
+                                    budgetHeaderData.avgIncome -
+                                    budgetHeaderData.avgExpense
+                                }
+                            />
                         )}
                     </div>
                     <GetBudgetButton

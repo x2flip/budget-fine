@@ -1,7 +1,10 @@
 import { Expense, Income } from '@prisma/client';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { BudgetHeaderData } from '../../../pages';
 
 interface IProps {
     expenses: Expense[];
+    setBudgetHeaderData: Dispatch<SetStateAction<BudgetHeaderData>>;
 }
 
 interface MonthlyExpensesCalculated {
@@ -38,9 +41,24 @@ function calculateMonthlyExpenses<MonthlyExpensesCalculated>(
     return { avgExpenses, minExpenses, maxExpenses };
 }
 
-export const ExpensesGrandTotals = ({ expenses }: IProps) => {
+export const ExpensesGrandTotals = ({
+    expenses,
+    setBudgetHeaderData,
+}: IProps) => {
     const monthlyExpenses: MonthlyExpensesCalculated =
         calculateMonthlyExpenses(expenses);
+
+    useEffect(() => {
+        setBudgetHeaderData((prev) => {
+            return {
+                ...prev,
+                minExpense: monthlyExpenses.minExpenses,
+                maxExpense: monthlyExpenses.maxExpenses,
+                avgExpense: monthlyExpenses.avgExpenses,
+            };
+        });
+    }, [expenses]);
+
     return (
         <div>
             <h1>Expenses</h1>
