@@ -11,6 +11,9 @@ import { AddExpenseDialog } from '../features/Expense';
 import { ExpenseCard } from '../features/Expense/ExpenseCard/ExpenseCard';
 import { redirect } from 'next/dist/server/api-utils';
 import { stat } from 'fs';
+import { IncomeGrandTotals } from '../features/Income/components/IncomesGrandTotals';
+import { GetBudgetButton } from '../features/GetBudget/components/GetBudgetButton';
+import { ExpensesGrandTotals } from '../features/Expense/components/ExpensesGrandTotals';
 
 // export async function getServerSideProps(context: any) {
 //     const session = await getSession();
@@ -56,24 +59,18 @@ const Home: NextPage = () => {
                 )}
             </nav>
             <main className="flex items-center justify-center min-h-screen dark:bg-slate-900 dark:text-slate-100">
-                {/* {!session ? (
-                    <button
-                        className="px-4 py-2 rounded-md shadow-md border-2 border-purple-400 text-purple-200 font-semibold hover:scale-110 transition-all duration-300"
-                        onClick={() => signIn()}
-                    >
-                        Login With Discord
-                    </button>
-                ) : ( */}
                 <div className="flex flex-col my-20 space-y-10">
-                    {/* {session?.user?.image && (
-                            <UserAvatar image={session.user.image} />
-                        )} */}
-                    <button
-                        onClick={() => setIsGetBudgetModalOpen(true)}
-                        className="border-2 border-cyan-400 py-4 text-cyan-400 shadow-xl shadow-cyan-400/20 rounded-md"
-                    >
-                        Get Budget!
-                    </button>
+                    <div className="flex justify-evenly">
+                        {incomes.data && (
+                            <IncomeGrandTotals incomes={incomes.data} />
+                        )}
+                        {expenses.data && (
+                            <ExpensesGrandTotals expenses={expenses.data} />
+                        )}
+                    </div>
+                    <GetBudgetButton
+                        setIsGetBudgetModalOpen={setIsGetBudgetModalOpen}
+                    />
                     <GetBudgetModal
                         incomes={incomes?.data}
                         isOpen={isGetBudgetModalOpen}
