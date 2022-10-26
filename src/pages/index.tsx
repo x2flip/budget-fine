@@ -82,7 +82,7 @@ const Home: NextPage = () => {
             </nav>
             <main className="flex items-center justify-center min-h-screen dark:bg-slate-900 dark:text-slate-100">
                 <div className="flex flex-col my-20 space-y-10">
-                    <div className="flex justify-evenly">
+                    <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 justify-evenly">
                         {incomes.data && (
                             <IncomeGrandTotals
                                 setBudgetHeaderData={setBudgetHeaderData}
